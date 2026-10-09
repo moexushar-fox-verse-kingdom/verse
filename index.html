@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Miner</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+<style>
+html,body{margin:0;height:100%;background:#EEF2FB}
+#splash{position:fixed;inset:0;z-index:99999;overflow:hidden;background:#030a26;transition:opacity .45s ease;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}
+#splash.out{opacity:0;pointer-events:none}
+#splash .sp-bg{position:absolute;inset:-4%;background:#030a26 center/cover no-repeat;filter:blur(22px) brightness(.65);opacity:0;transition:opacity .4s ease}
+#splash .sp-stage{position:absolute;top:0;bottom:0;left:50%;height:100%;aspect-ratio:941/1672;transform:translateX(-50%);--u:.5px}
+#splash .sp-stage>img{display:block;width:100%;height:100%;-webkit-user-drag:none;pointer-events:none;opacity:0;transition:opacity .35s ease}
+/* live bar sits exactly over the loading bar drawn in the artwork (941x1672 art; --u = 1 art-pixel, set from JS) */
+#splash .sp-bar{position:absolute;left:21.68%;top:91.6%;width:56.43%;height:2.63%;box-sizing:border-box;padding:calc(var(--u)*3.5);border:calc(var(--u)*3.5) solid #1cecff;border-radius:99px;background:linear-gradient(#020a30,#051252);box-shadow:0 0 calc(var(--u)*7) rgba(30,150,255,.85),inset 0 0 calc(var(--u)*9) rgba(0,0,0,.7);opacity:0;transition:opacity .35s ease}
+#splash .sp-fill{display:block;height:100%;width:0;border-radius:99px;background:repeating-linear-gradient(115deg,rgba(255,255,255,.22) 0 9px,rgba(255,255,255,0) 9px 18px) 0 0/36px 100%,linear-gradient(90deg,#0aa6ff,#3df2ff);box-shadow:0 0 10px rgba(34,230,255,.75);animation:spmove .9s linear infinite}
+@keyframes spmove{to{background-position:36px 0,0 0}}
+#splash .sp-txt{position:absolute;left:0;right:0;top:95.3%;text-align:center;color:#bcdcff;font-size:clamp(10px,1.45vh,13px);font-weight:700;letter-spacing:1px;text-transform:uppercase;text-shadow:0 0 8px rgba(30,144,255,.9);opacity:0;transition:opacity .35s ease}
+#splash .sp-txt b{color:#fff;font-weight:800}
+#splash.rdy .sp-bg,#splash.rdy .sp-stage>img,#splash.rdy .sp-bar,#splash.rdy .sp-txt{opacity:1}
+@media (prefers-reduced-motion:reduce){#splash .sp-fill{animation:none}}
+</style>
+<script>
+/* Live splash progress: real loading milestones (scripts, Telegram, Firebase, user data) drive the bar.
+   The splash artwork itself is embedded in assets.js (SPLASH_SRC) like every other asset. */
+window.Splash=(function(){
+  var MIN_MS=1200,MAX_MS=20000,t0=performance.now(),el,stage,fill,num,msg;
+  var target=0,shown=0,ceil=0,fin=false,gone=false,lastInt=-1,scripts=0,TOTAL_SCRIPTS=10;
+  function look(){
+    if(!el){el=document.getElementById('splash');if(el){stage=el.querySelector('.sp-stage');fill=el.querySelector('.sp-fill');num=el.querySelector('.sp-num');msg=el.querySelector('.sp-msg')}}
+    return el;
+  }
+  function fitU(){if(stage&&stage.clientHeight)stage.style.setProperty('--u',(stage.clientHeight/1672)+'px')}
+  function set(p,text){if(fin)return;p=Math.min(97,p);if(p>target){target=p;ceil=Math.min(97,p+7)}if(text){look();if(msg&&msg.textContent!==text)msg.textContent=text}}
+  function step(){scripts++;set(6+scripts*(40/TOTAL_SCRIPTS))}
+  function done(){if(fin)return;fin=true;target=100}
+  function img(src){                                                /* called once assets.js is loaded */
+    if(!look())return;
+    var im=stage.querySelector('img');
+    el.querySelector('.sp-bg').style.backgroundImage='url("'+src+'")';
+    im.onload=function(){fitU();el.classList.add('rdy');set(6)};
+    im.src=src;
+  }
+  function tick(){
+    if(gone)return;
+    if(look()){
+      var now=performance.now();
+      if(!fin&&now-t0>MAX_MS)done();
+      var diff=target-shown;
+      if(diff>0.05)shown+=Math.max(diff*0.08,0.15);                 /* ease toward real progress */
+      else if(!fin&&shown<ceil)shown+=0.03;                         /* tiny creep so it never looks frozen */
+      if(shown>100)shown=100;
+      fill.style.width=shown.toFixed(2)+'%';
+      var i=Math.floor(shown);if(i!==lastInt){lastInt=i;num.textContent=i+'%'}
+      if(fin&&shown>=99.9&&now-t0>=MIN_MS){gone=true;el.classList.add('out');setTimeout(function(){el.remove()},500);return}
+    }
+    requestAnimationFrame(tick);
+  }
+  addEventListener('resize',fitU);addEventListener('orientationchange',function(){setTimeout(fitU,150)});
+  requestAnimationFrame(tick);
+  return {set:set,step:step,done:done,img:img};
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.383.0/dist/umd/lucide.min.js" onload="window.Splash&&Splash.step()"></script>
+<link rel="stylesheet" href="style.css?v=l1">
+</head>
+<body><div id="splash" aria-hidden="true"><div class="sp-bg"></div><div class="sp-stage"><img alt="" draggable="false"><div class="sp-bar"><i class="sp-fill"></i></div><div class="sp-txt"><span class="sp-msg">Loading…</span> · <b class="sp-num">0%</b></div></div></div>
+<div id="app"></div>
+<script src="assets.js" onload="window.Splash&&(Splash.img(SPLASH_SRC),Splash.step())"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js" onload="window.Splash&&Splash.step()"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js" onload="window.Splash&&Splash.step()"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics-compat.js"></script>
+<script src="init.js?v=l1" onload="window.Splash&&Splash.step()"></script>
+<script src="firebase-config.js" onload="window.Splash&&Splash.step()"></script>
+<script src="backend.js?v=l1" onload="window.Splash&&Splash.step()"></script>
+<script src="app.js?v=l1" onload="window.Splash&&Splash.step()"></script>
+<script src="fit.js?v=l1" onload="window.Splash&&Splash.step()"></script>
+</body></html>

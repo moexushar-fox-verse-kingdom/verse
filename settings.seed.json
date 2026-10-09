@@ -1,0 +1,100 @@
+{
+  "settings": {
+    "baseRatePerHour": 0.00139,
+    "baseEnergy": 3,
+    "maxEnergy": 5,
+    "sessionHours": 20,
+    "energyRechargeHours": 5,
+    "teamCommissionPercent": 0,
+    "minWithdraw": 0.1,
+    "links": {
+      "channel": "https://t.me/YourChannel",
+      "support": "https://t.me/YourSupport",
+      "faq": "https://t.me/YourChannel",
+      "kyc": ""
+    },
+    "referral": {
+      "enabled": true,
+      "partnerReward": 0.001,
+      "memberReward": 0.0005,
+      "goalTarget": 1000,
+      "goalReward": 50
+    },
+    "upgradeTasks": {
+      "r1": {
+        "kind": "rate",
+        "title": "Boost Per/H",
+        "desc": "Watch 100 ads and get a permanent Per/H boost. Repeat to boost again.",
+        "ads": 100,
+        "reward": 1e-05,
+        "maxClaims": 0,
+        "order": 10,
+        "enabled": true
+      },
+      "rs1": {
+        "kind": "restore",
+        "title": "Restore Energy",
+        "desc": "Watch 20 ads to refill your energy.",
+        "ads": 20,
+        "reward": 0,
+        "maxClaims": 0,
+        "order": 20,
+        "enabled": true
+      },
+      "b4": {
+        "kind": "bar",
+        "title": "Unlock Energy Bar 4",
+        "desc": "Watch ads to unlock energy bar 4.",
+        "ads": 500,
+        "barNo": 4,
+        "order": 30,
+        "enabled": true
+      },
+      "b5": {
+        "kind": "bar",
+        "title": "Unlock Energy Bar 5",
+        "desc": "Watch ads to unlock energy bar 5.",
+        "ads": 1000,
+        "barNo": 5,
+        "order": 40,
+        "enabled": true
+      },
+      "i10": {
+        "kind": "invite",
+        "title": "Invite 10 Friends",
+        "desc": "Invite 10 partners and get a permanent Per/H boost.",
+        "target": 10,
+        "reward": 0.0005,
+        "order": 50,
+        "enabled": true,
+        "src": "partner",
+        "rtype": "rate"
+      },
+      "i50": {
+        "kind": "invite",
+        "title": "Invite 50 Friends",
+        "desc": "Invite 50 partners and get a permanent Per/H boost.",
+        "target": 50,
+        "reward": 0.001,
+        "order": 60,
+        "enabled": true,
+        "src": "partner",
+        "rtype": "rate"
+      },
+      "i100": {
+        "kind": "invite",
+        "title": "Invite 100 Friends",
+        "desc": "Invite 100 partners and get a permanent Per/H boost.",
+        "target": 100,
+        "reward": 0.002,
+        "order": 70,
+        "enabled": true,
+        "src": "partner",
+        "rtype": "rate"
+      }
+    },
+    "upgrade": {
+      "minAdSeconds": 10
+    }
+  }
+}

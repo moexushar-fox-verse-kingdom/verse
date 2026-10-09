@@ -1,0 +1,665 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "settings": {
+      ".read": true,
+      ".write": true
+    },
+    "wdStages": {
+      ".read": true,
+      ".write": true,
+      "$n": {
+        ".validate": "$n.matches(/^s[0-9]+$/) && newData.hasChildren(['refer','min','max','hint','restrict'])",
+        "refer": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "min": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "max": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "hint": {
+          ".validate": "newData.isBoolean()"
+        },
+        "restrict": {
+          ".validate": "newData.isBoolean()"
+        },
+        "anti": {
+          ".validate": "newData.isBoolean()"
+        },
+        "antiIp": {
+          ".validate": "newData.isBoolean()"
+        },
+        "freezeAfter": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "users": {
+      ".read": true,
+      ".indexOn": [
+        "totalBalance"
+      ],
+      "$uid": {
+        ".read": true,
+        ".write": "newData.exists()",
+        ".validate": "newData.hasChildren(['uid','totalMining','totalCommission','totalBalance','frozenBalance','holdBalance','kyc','joinedBy','totalInvite','joinedAt'])",
+        "uid": {
+          ".validate": "newData.val() === $uid"
+        },
+        "firstName": {
+          ".validate": "newData.isString() && newData.val().length <= 64"
+        },
+        "lastName": {
+          ".validate": "newData.isString() && newData.val().length <= 64"
+        },
+        "username": {
+          ".validate": "newData.isString() && newData.val().length <= 64"
+        },
+        "photoUrl": {
+          ".validate": "newData.isString() && newData.val().length <= 500"
+        },
+        "totalMining": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "totalCommission": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "totalBalance": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "totalWithdrawn": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "bonusRate": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "totalInvite": {
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 === 0"
+        },
+        "frozenBalance": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "holdBalance": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "kyc": {
+          ".validate": "newData.isBoolean()"
+        },
+        "banned": {
+          ".validate": "newData.isBoolean()"
+        },
+        "bannedAt": {
+          ".validate": "newData.isNumber()"
+        },
+        "runing_withd": {
+          ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() % 1 === 0"
+        },
+        "joinedBy": {
+          ".validate": "newData.isString() && newData.val().length <= 20 && (!data.exists() || data.val() === '' || newData.val() === data.val())"
+        },
+        "joinedAt": {
+          ".validate": "newData.isNumber() && (!data.exists() || newData.val() === data.val())"
+        },
+        "lastSeen": {
+          ".validate": "newData.isNumber()"
+        },
+        "online": {
+          ".validate": "newData.isBoolean()"
+        },
+        "mining": {
+          "isMining": {
+            ".validate": "newData.isBoolean()"
+          },
+          "startedAt": {
+            ".validate": "newData.isNumber()"
+          },
+          "endsAt": {
+            ".validate": "newData.isNumber()"
+          },
+          "rate": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "accrued": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "rateSince": {
+            ".validate": "newData.isNumber()"
+          },
+          "lastEndedAt": {
+            ".validate": "newData.isNumber()"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "energyAds": {
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 === 0"
+        },
+        "extraAds": {
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 === 0"
+        },
+        "rateAds": {
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 === 0"
+        },
+        "energy": {
+          "value": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 5"
+          },
+          "at": {
+            ".validate": "newData.isNumber()"
+          },
+          "resetAt": {
+            ".validate": "newData.isNumber()"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "today": {
+          "day": {
+            ".validate": "newData.isString() && newData.val().length <= 10"
+          },
+          "mined": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "ads": {
+          "day": {
+            ".validate": "newData.isString() && newData.val().length <= 10"
+          },
+          "count": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "tasks": {
+          "$task": {
+            ".validate": "newData.isNumber()"
+          }
+        },
+        "wallet": {
+          "network": {
+            ".validate": "newData.isString() && newData.val().length <= 40"
+          },
+          "address": {
+            ".validate": "newData.isString() && newData.val().matches(/^0x[a-fA-F0-9]{40}$/)"
+          },
+          "updatedAt": {
+            ".validate": "newData.isNumber()"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "teamCode": {
+          ".validate": "newData.isString() && (newData.val().matches(/^[a-z0-9]{9}$/) || newData.val().matches(/^[A-Z0-9]{3}[0-9]{3}[A-Z][0-9]$/)) && (!data.exists() || newData.val() === data.val() || data.val().matches(/^[a-z0-9]{9}$/))"
+        },
+        "joinedBy2": {
+          ".validate": "newData.isString() && newData.val().length <= 20 && (!data.exists() || data.val() === '' || newData.val() === data.val())"
+        },
+        "totalTeam": {
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 === 0"
+        },
+        "totalReferral": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "upg": {
+          "$tid": {
+            "ads": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            },
+            "claims": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        },
+        "barsAdded": {
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 === 0"
+        },
+        "acRej": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "userPrivate": {
+      ".read": true,
+      "$uid": {
+        ".read": true,
+        ".write": "newData.exists()",
+        ".validate": "newData.hasChildren(['uid'])",
+        "uid": {
+          ".validate": "newData.val() === $uid"
+        },
+        "deviceIp": {
+          ".validate": "newData.isString() && newData.val().length <= 64"
+        },
+        "localIp": {
+          ".validate": "newData.isString() && newData.val().length <= 64"
+        },
+        "userAgent": {
+          ".validate": "newData.isString() && newData.val().length <= 300"
+        },
+        "platform": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "language": {
+          ".validate": "newData.isString() && newData.val().length <= 20"
+        },
+        "timezone": {
+          ".validate": "newData.isString() && newData.val().length <= 60"
+        },
+        "lastSeen": {
+          ".validate": "newData.isNumber()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "leaderboard": {
+      ".read": true,
+      ".indexOn": [
+        "totalBalance"
+      ],
+      "$uid": {
+        ".write": "newData.exists()",
+        ".validate": "newData.hasChildren(['uid','totalBalance'])",
+        "uid": {
+          ".validate": "newData.val() === $uid"
+        },
+        "firstName": {
+          ".validate": "newData.isString() && newData.val().length <= 64"
+        },
+        "lastName": {
+          ".validate": "newData.isString() && newData.val().length <= 64"
+        },
+        "username": {
+          ".validate": "newData.isString() && newData.val().length <= 64"
+        },
+        "photoUrl": {
+          ".validate": "newData.isString() && newData.val().length <= 500"
+        },
+        "totalBalance": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "teams": {
+      "$uid": {
+        "members": {
+          ".read": true,
+          ".indexOn": [
+            "joinedAt"
+          ],
+          "$mid": {
+            ".write": "newData.exists()",
+            ".validate": "newData.hasChildren(['uid','joinedAt','commission'])",
+            "uid": {
+              ".validate": "newData.val() === $mid"
+            },
+            "firstName": {
+              ".validate": "newData.isString() && newData.val().length <= 64"
+            },
+            "lastName": {
+              ".validate": "newData.isString() && newData.val().length <= 64"
+            },
+            "username": {
+              ".validate": "newData.isString() && newData.val().length <= 64"
+            },
+            "photoUrl": {
+              ".validate": "newData.isString() && newData.val().length <= 500"
+            },
+            "joinedAt": {
+              ".validate": "newData.isNumber()"
+            },
+            "commission": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            },
+            "bonus": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            },
+            "via": {
+              ".validate": "newData.isString() && newData.val().length <= 20"
+            },
+            "paid": {
+              ".validate": "newData.isNumber()"
+            },
+            "st": {
+              ".validate": "newData.isString() && newData.val().length <= 10"
+            },
+            "fl": {
+              ".validate": "newData.isString() && newData.val().length <= 20"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        },
+        "level2": {
+          ".read": true,
+          ".indexOn": [
+            "joinedAt"
+          ],
+          "$mid": {
+            ".write": "newData.exists()",
+            ".validate": "newData.hasChildren(['uid','joinedAt','commission'])",
+            "uid": {
+              ".validate": "newData.val() === $mid"
+            },
+            "firstName": {
+              ".validate": "newData.isString() && newData.val().length <= 64"
+            },
+            "lastName": {
+              ".validate": "newData.isString() && newData.val().length <= 64"
+            },
+            "username": {
+              ".validate": "newData.isString() && newData.val().length <= 64"
+            },
+            "photoUrl": {
+              ".validate": "newData.isString() && newData.val().length <= 500"
+            },
+            "joinedAt": {
+              ".validate": "newData.isNumber()"
+            },
+            "commission": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            },
+            "bonus": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            },
+            "via": {
+              ".validate": "newData.isString() && newData.val().length <= 20"
+            },
+            "paid": {
+              ".validate": "newData.isNumber()"
+            },
+            "st": {
+              ".validate": "newData.isString() && newData.val().length <= 10"
+            },
+            "fl": {
+              ".validate": "newData.isString() && newData.val().length <= 20"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        }
+      }
+    },
+    "miningHistory": {
+      "$uid": {
+        ".read": true,
+        "$id": {
+          ".write": "!data.exists() && newData.exists()",
+          ".validate": "newData.hasChildren(['amount','status','timestamp'])",
+          "amount": {
+            ".validate": "newData.isNumber() && newData.val() > 0"
+          },
+          "status": {
+            ".validate": "newData.isString() && newData.val().length <= 20"
+          },
+          "timestamp": {
+            ".validate": "newData.isNumber()"
+          },
+          "startedAt": {
+            ".validate": "newData.isNumber()"
+          },
+          "seconds": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+    },
+    "withdrawals": {
+      "$uid": {
+        ".read": true,
+        "$wid": {
+          ".write": "newData.exists()",
+          ".validate": "newData.hasChildren(['amount','address','status','timestamp'])",
+          "amount": {
+            ".validate": "newData.isNumber() && newData.val() > 0 && (!data.exists() || newData.val() === data.val())"
+          },
+          "address": {
+            ".validate": "newData.isString() && newData.val().matches(/^0x[a-fA-F0-9]{40}$/)"
+          },
+          "network": {
+            ".validate": "newData.isString() && newData.val().length <= 40"
+          },
+          "status": {
+            ".validate": "newData.val() === 'pending' || newData.val() === 'completed' || newData.val() === 'rejected'"
+          },
+          "timestamp": {
+            ".validate": "newData.isNumber()"
+          },
+          "settled": {
+            ".validate": "newData.isBoolean()"
+          },
+          "note": {
+            ".validate": "newData.isString() && newData.val().length <= 200"
+          },
+          "orderId": {
+            ".validate": "newData.isString() && newData.val().length <= 40"
+          },
+          "wdNo": {
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() % 1 === 0"
+          },
+          "by": {
+            ".validate": "newData.isString() && newData.val().length <= 10"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+    },
+    "walletIndex": {
+      "$addr": {
+        ".read": true,
+        "$uid": {
+          ".write": "newData.exists()",
+          ".validate": "newData.isNumber()"
+        }
+      }
+    },
+    "withdrawQueue": {
+      ".read": true,
+      "$id": {
+        ".write": true,
+        ".validate": "newData.hasChildren(['uid','wid','amount','address','timestamp'])",
+        "uid": {
+          ".validate": "newData.isString() && newData.val().length <= 20"
+        },
+        "wid": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "amount": {
+          ".validate": "newData.isNumber() && newData.val() > 0"
+        },
+        "address": {
+          ".validate": "newData.isString() && newData.val().matches(/^0x[a-fA-F0-9]{40}$/)"
+        },
+        "network": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "timestamp": {
+          ".validate": "newData.isNumber()"
+        },
+        "orderId": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "username": {
+          ".validate": "newData.isString() && newData.val().length <= 64"
+        },
+        "firstName": {
+          ".validate": "newData.isString() && newData.val().length <= 64"
+        },
+        "photoUrl": {
+          ".validate": "newData.isString() && newData.val().length <= 500"
+        },
+        "wdNo": {
+          ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() % 1 === 0"
+        },
+        "sameWallet": {
+          ".validate": "newData.isBoolean()"
+        },
+        "sameWalletCount": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "status": {
+          ".validate": "newData.val() === 'pending' || newData.val() === 'completed' || newData.val() === 'rejected'"
+        },
+        "actedAt": {
+          ".validate": "newData.isNumber()"
+        },
+        "sameWalletUids": {
+          ".validate": "newData.isString() && newData.val().length <= 400"
+        },
+        "by": {
+          ".validate": "newData.isString() && newData.val().length <= 10"
+        },
+        "note": {
+          ".validate": "newData.isString() && newData.val().length <= 200"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "adConfig": {
+      ".read": true,
+      ".write": true,
+      ".validate": "newData.hasChildren(['provider'])",
+      "provider": {
+        ".validate": "newData.val() === 'monetag' || newData.val() === 'adsgram'"
+      },
+      "monetag": {
+        "zoneId": {
+          ".validate": "newData.isString() && newData.val().matches(/^[0-9]{0,12}$/)"
+        },
+        "sdkUrl": {
+          ".validate": "newData.isString() && newData.val().matches(/^(https:\\/\\/[^ ]{4,300})?$/)"
+        },
+        "$other": {
+          ".validate": false
+        }
+      },
+      "adsgram": {
+        "blockId": {
+          ".validate": "newData.isString() && newData.val().matches(/^(int-)?[0-9]{0,12}$/)"
+        },
+        "sdkUrl": {
+          ".validate": "newData.isString() && newData.val().matches(/^(https:\\/\\/[^ ]{4,300})?$/)"
+        },
+        "$other": {
+          ".validate": false
+        }
+      },
+      "updatedAt": {
+        ".validate": "newData.isNumber()"
+      },
+      "auto": {
+        "enabled": {
+          ".validate": "newData.isBoolean()"
+        },
+        "seconds": {
+          ".validate": "newData.isNumber() && newData.val() >= 30 && newData.val() <= 3600"
+        },
+        "$other": {
+          ".validate": false
+        }
+      },
+      "$other": {
+        ".validate": false
+      }
+    },
+    "teamCodes": {
+      "$code": {
+        ".read": true,
+        ".write": "!data.exists() && newData.exists()",
+        ".validate": "($code.matches(/^[a-z0-9]{9}$/) || $code.matches(/^[A-Z0-9]{3}[0-9]{3}[A-Z][0-9]$/)) && newData.isString() && newData.val().length <= 20"
+      }
+    },
+    "pendingRefs": {
+      "$uid": {
+        ".read": true,
+        ".write": "!data.exists() && newData.exists()",
+        ".validate": "newData.isString() && newData.val().length <= 40"
+      }
+    },
+    "deviceIndex": {
+      "$k": {
+        ".read": true,
+        "$uid": {
+          ".write": "newData.exists()",
+          ".validate": "newData.isNumber()"
+        }
+      }
+    },
+    "ipIndex": {
+      "$k": {
+        ".read": true,
+        "$uid": {
+          ".write": "newData.exists()",
+          ".validate": "newData.isNumber()"
+        }
+      }
+    },
+    "logs": {
+      ".read": true,
+      "$id": {
+        ".write": "(!data.exists() && newData.exists()) || (data.exists() && !newData.exists())",
+        ".validate": "newData.hasChildren(['uid','error','ts'])",
+        "uid": {
+          ".validate": "newData.isString() && newData.val().length <= 20"
+        },
+        "username": {
+          ".validate": "newData.isString() && newData.val().length <= 64"
+        },
+        "firstName": {
+          ".validate": "newData.isString() && newData.val().length <= 64"
+        },
+        "error": {
+          ".validate": "newData.isString() && newData.val().length <= 300"
+        },
+        "src": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "page": {
+          ".validate": "newData.isString() && newData.val().length <= 30"
+        },
+        "plat": {
+          ".validate": "newData.isString() && newData.val().length <= 20"
+        },
+        "ts": {
+          ".validate": "newData.isNumber()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    }
+  }
+}
